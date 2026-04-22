@@ -1,0 +1,16 @@
+{
+  "name": "koa-blog-server",
+  "version": "1.0.0",
+  "description": "backend server for blog",
+  "scripts": {
+    "start:dev": "nodemon --inspect ./app.js"
+  },
+  "author": "ha",
+  "license": "MIT",
+  "dependencies": {
+    "koa": "^3.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

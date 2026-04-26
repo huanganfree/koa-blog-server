@@ -1,26 +1,14 @@
+require('dotenv').config({path: `.env.${process.env.NODE_ENV}`})
 const Koa = require('koa');
 const app = new Koa();
 
-// logger
-
 app.use(async (ctx, next) => {
-    console.log('1=');
-    
-  await next();
-  console.log('2=');
+  console.log('1=');
 });
 
-// x-response-time
 
-app.use(async (ctx, next) => {
-  await next();
-  console.log('3=');
+app.on('error', err => {
+  console.error('server error', err)
 });
 
-// response
-
-app.use(async ctx => {
-  ctx.body = '<h1>Hello World</h1>';
-});
-
-app.listen(8000);
+app.listen(process.env.PORT);

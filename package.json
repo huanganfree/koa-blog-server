@@ -3,14 +3,19 @@
   "version": "1.0.0",
   "description": "backend server for blog",
   "scripts": {
-    "start:dev": "nodemon --inspect ./app.js"
+    "start:dev": "cross-env NODE_ENV=development nodemon --inspect ./app.js"
   },
   "author": "ha",
   "license": "MIT",
   "dependencies": {
-    "koa": "^3.2.0"
+    "dotenv": "^17.4.2",
+    "koa": "^3.2.0",
+    "koa-route": "^4.0.1",
+    "mysql2": "^3.22.2",
+    "sequelize": "^6.37.8"
   },
   "devDependencies": {
+    "cross-env": "^10.1.0",
     "nodemon": "^3.1.14"
   }
 }

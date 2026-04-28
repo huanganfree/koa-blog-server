@@ -3,19 +3,24 @@
   "version": "1.0.0",
   "description": "backend server for blog",
   "scripts": {
-    "start:dev": "cross-env NODE_ENV=development nodemon --inspect ./app.js"
+    "start:dev": "cross-env NODE_ENV=development nodemon --watch src --watch .env.development --exec ts-node --transpile-only src/app.ts"
   },
   "author": "ha",
   "license": "MIT",
   "dependencies": {
+    "@koa/bodyparser": "^6.1.0",
+    "@koa/router": "^15.4.0",
     "dotenv": "^17.4.2",
     "koa": "^3.2.0",
-    "koa-route": "^4.0.1",
     "mysql2": "^3.22.2",
     "sequelize": "^6.37.8"
   },
   "devDependencies": {
+    "@types/koa": "^3.0.2",
+    "@types/node": "^25.6.0",
     "cross-env": "^10.1.0",
-    "nodemon": "^3.1.14"
+    "nodemon": "^3.1.14",
+    "ts-node": "^10.9.2",
+    "typescript": "^6.0.3"
   }
 }

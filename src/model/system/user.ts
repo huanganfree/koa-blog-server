@@ -1,11 +1,12 @@
-const { DataTypes } = require('sequelize');
-const {sequelize} = require('../../db/index')
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../../db/index';
+
 
 const User = sequelize.define(
     'User',
     {
         id: {
-            type: DataTypes.INTEGER,
+            type: DataTypes.INET,
             allowNull: false,
             autoIncrement: true,
             primaryKey: true,
@@ -22,10 +23,11 @@ const User = sequelize.define(
         nickname: {
             type: DataTypes.STRING,
             allowNull: false,
+            defaultValue: '昵称'
         },
         lastLoginTime: {
-          type: DataTypes.DATE,
-          comment: '最后登录时间'
+            type: DataTypes.DATE,
+            comment: '最后登录时间'
         }
     },
     {
@@ -34,6 +36,6 @@ const User = sequelize.define(
     },
 );
 
-module.exports = {
+export {
     User
 }

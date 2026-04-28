@@ -1,4 +1,4 @@
-module.exports = {
+export const dbConfig = {
     host: 'localhost', // 生产和开发环境都是该地址
     port: '3306',
     database: process.env.DB_NAME,

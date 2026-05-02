@@ -1,4 +1,4 @@
-import { User } from './system/user'
+import { User } from './auth/user'
 
 export {
     User

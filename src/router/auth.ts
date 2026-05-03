@@ -1,4 +1,4 @@
-import { getUserInfo, login, logout } from "../controller/auth.controller";
+import { login, logout } from "../controller/auth.controller";
 import Router from '@koa/router';
 
 const router = new Router({ prefix:'/api/auth' });

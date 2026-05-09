@@ -1,4 +1,5 @@
 import { Sequelize } from 'sequelize';
+import { initRole, initUser } from '../model';
 
 function requireEnv(name: string): string {
   const value = process.env[name];
@@ -8,25 +9,16 @@ function requireEnv(name: string): string {
 
 const sequelize = new Sequelize(requireEnv('DB_NAME'), requireEnv('DB_USER'), requireEnv('DB_PASSWORD'), {
   host: 'localhost',
-  dialect: 'mysql'
+  dialect: 'mysql',
+  timezone: '+08:00' // 使用北京时间
 });
 
-
-async function testConnectDatabase() {
-  await sequelize.authenticate();
-  await sequelize.sync({ force: false, match: /^koa_news_admin$/, alter: false })
-  console.log('test === Connection has been established successfully.');
-}
-
-(async () => {
-  try {
-    await testConnectDatabase();
-  } catch (error) {
-    console.error('Unable to connect to the database:', error);
-  }
-})();
+const User = initUser(sequelize)
+const Role = initRole(sequelize)
 
 
 export {
-  sequelize
+  sequelize,
+  User,
+  Role
 }

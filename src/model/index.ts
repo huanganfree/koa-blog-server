@@ -1,5 +1,7 @@
-import { User } from './auth/user'
+import { initUser } from './auth/user'
+import { initRole } from './system/role'
 
 export {
-    User
+    initUser,
+    initRole
 }

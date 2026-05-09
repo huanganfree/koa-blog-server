@@ -5,44 +5,33 @@ import jwt from 'koa-jwt';
 import dotenv from 'dotenv';
 dotenv.config({ path: `.env.${process.env.NODE_ENV}` })
 
-import('./model/index');
-import('./db/index');
+import { sequelize } from './db';
 import { mountRouters } from './router/index';
-import { responseFail } from './utils/response';
+import { errorMiddleware } from './middleware/error.middleware';
 
 console.log('当前环境==', process.env.DB_HOST)
 
 const app = new Koa();
 
-// Custom 401 handling if you don't want to expose koa-jwt errors to users
-app.use(async function (ctx, next) {
-  try {
-    return await next();
-  } catch (err: any) {
-    console.log('err===', err);
-    if (401 == err.status) {
-      ctx.status = 401;
-      const errName = err.originalError.name
-      if (errName == 'TokenExpiredError') {
-        responseFail(ctx, 'token过期', 401);
-      } else if (errName == 'JsonWebTokenError') {
-        responseFail(ctx, '认证失败，请提供有效的 Token', 401);
-      }
-    } else {
-      throw err;
-    }
-  }
-});
+app.use(errorMiddleware);
 
-// 跳过登录
-app.use(jwt({ secret: process.env.JWT_SECRET! }).unless({ path: [/^\/api\/auth\/login$/] }));
+app.use(jwt({ secret: process.env.JWT_SECRET! }).unless({ path: [/^\/api\/auth\/login$/] }));// 跳过登录
 
 app.use(bodyParser());
 
 mountRouters(app)
 
-app.on('error', err => {
-  console.error('server error', err)
-});
+// 你可以在这里进行关联查询，或者执行同步
+async function bootstrap() {
+  await sequelize.authenticate();
+  console.log('test === Connection has been established successfully.');
+  await sequelize.sync({ force: false, match: /^koa_news_admin$/, alter: true })
+  app.listen(process.env.PORT);
 
-app.listen(process.env.PORT);
+  app.on('error', err => {
+    console.error('server error', err)
+  });
+}
+
+bootstrap();
+

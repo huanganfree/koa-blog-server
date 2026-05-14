@@ -37,6 +37,7 @@ function initUser(sequelize: Sequelize) {
         {
             // freezeTableName: true,
             tableName: 'user',
+            paranoid: true
             // underscored: true
         },
     )

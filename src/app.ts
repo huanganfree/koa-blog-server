@@ -17,7 +17,9 @@ app.use(errorMiddleware);
 
 app.use(jwt({ secret: process.env.JWT_SECRET! }).unless({ path: [/^\/api\/auth\/login$/] }));// 跳过登录
 
-app.use(bodyParser());
+app.use(bodyParser({
+  parsedMethods: ['DELETE','POST', 'PUT', 'PATCH']
+}));
 
 mountRouters(app)
 

@@ -1,5 +1,5 @@
 import { Context, Next } from "koa";
-import { serviceAddRole, serviceGetRoles, serviceGetUserInfo } from "../service/system.service";
+import { serviceAddRole, serviceDeleteRoles, serviceEditRoles, serviceGetRoles, serviceGetUserInfo } from "../service/system.service";
 import { responseFail, responseSuccess } from "../utils/response";
 import { UserRequestBody } from "./auth.controller";
 
@@ -15,7 +15,7 @@ export async function getUserInfo(ctx: Context, next: Next) {
 
 // 新增角色
 export interface RoleBody {
-    id?:number,
+    id?: number,
     roleName: string;
     roleCode: string;
     description?: string;
@@ -25,14 +25,14 @@ export interface RoleBody {
 }
 export async function addRole(ctx: Context, next: Next) {
     const { roleName, roleCode } = ctx.request.body as RoleBody
-    if(!roleName){
+    if (!roleName) {
         responseFail(ctx, '角色名称必填', 400)
-    } else if(!roleCode){
+    } else if (!roleCode) {
         responseFail(ctx, '角色标识必填', 400)
     } else {
         const res = await serviceAddRole(ctx)
-        if(res.id)
-        responseSuccess(ctx, null, '操作成功！')
+        if (res.id)
+            responseSuccess(ctx, null, '操作成功！')
     }
 }
 
@@ -44,10 +44,38 @@ export interface RoleSearch {
 }
 export async function getRoles(ctx: Context, next: Next) {
     const { page, pageSize } = ctx.request.query
-    if(!page || !pageSize){
+    if (!page || !pageSize) {
         responseFail(ctx, '分页，页码必填', 400)
-    }  else {
+    } else {
         const { total, records } = await serviceGetRoles(ctx)
-        responseSuccess(ctx, {total, records}, '操作成功！')
+        responseSuccess(ctx, { total, records }, '操作成功！')
+    }
+}
+
+// 删除角色
+export async function deleteRoles(ctx: Context, next: Next) {
+    const ids = (ctx.request.body as any[]) || []
+    if (!ids?.length) {
+        responseFail(ctx, '参数不能为空', 400)
+    } else {
+        await serviceDeleteRoles(ids) // 参数处理后，直接传入，不传ctx了
+        responseSuccess(ctx, null, '操作成功！')
+    }
+}
+
+// 编辑角色
+export interface EditRole {
+    id: number,
+    roleName?: string;
+    roleCode?: string;
+    description?: string;
+}
+export async function editRoles(ctx: Context, next: Next) {
+    const editData = ctx.request.body as EditRole
+    if (!editData?.id) {
+        responseFail(ctx, 'id不能为空', 400)
+    } else {
+        await serviceEditRoles(editData)
+        responseSuccess(ctx, null)
     }
 }

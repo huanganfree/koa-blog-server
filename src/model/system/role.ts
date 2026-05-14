@@ -39,7 +39,7 @@ function initRole(sequelize: Sequelize) {
                 type: DataTypes.TINYINT,
                 allowNull: true,
                 comment: '禁用状态, 1启用 0禁用',
-                defaultValue: 1
+                defaultValue: 0
             },
             createdBy: {
                 type: DataTypes.BIGINT,
@@ -53,6 +53,7 @@ function initRole(sequelize: Sequelize) {
         },
         {
             tableName: 'role',
+            paranoid: true
         },
     )
     return role
